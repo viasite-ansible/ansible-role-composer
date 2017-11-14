@@ -1,0 +1,27 @@
+---
+dependency:
+  name: galaxy
+  options:
+    role-file: tests/requirements.yml
+driver:
+  name: docker
+platforms:
+  - name: ansible-role-composer-1604
+    image: ubuntu
+    image_version: 16.04
+    volume_mounts:
+      - ${MOLECULE_APTPROXY_PATH}:/etc/apt/apt.conf.d/00aptproxy
+
+lint:
+  name: yamllint
+  enabled: False
+
+provisioner:
+  name: ansible
+  inventory:
+    group_vars:
+      all:
+        # Test a global requirement.
+        composer_global_packages:
+          - name: phpunit/phpunit
+            release: "@stable"
